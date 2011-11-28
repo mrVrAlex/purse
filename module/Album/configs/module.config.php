@@ -18,9 +18,9 @@ $default = array(
                 'parameters' => array(
                     'config' => array(
                         'host' => 'localhost',
-                        'username' => 'rob',
-                        'password' => '123456',
-                        'dbname' => 'zf2tutorial',
+                        'username' => 'vronskiy_purse',
+                        'password' => 'purse123',
+                        'dbname' => 'vronskiy_purse',
                     ),
                 ),
             ),

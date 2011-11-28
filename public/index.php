@@ -1,4 +1,15 @@
 <?php
+// Define application environment
+defined('APPLICATION_ENV')
+    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
+
+// Ensure ZF is on the include path
+set_include_path(implode(PATH_SEPARATOR, array(
+    realpath(__DIR__ . '/../vendor'),
+    realpath(__DIR__ . '/../vendor/ZendFramework/library'),
+    get_include_path(),
+)));
+
 require_once dirname(__DIR__) . '/vendor/ZendFramework/library/Zend/Loader/AutoloaderFactory.php';
 Zend\Loader\AutoloaderFactory::factory(array('Zend\Loader\StandardAutoloader' => array()));
 
