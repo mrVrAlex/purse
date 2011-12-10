@@ -7,7 +7,8 @@ return array(
     'modules' => array(
         'Application',
         'Album',
-        'ZendDeveloperTools'
+        'ZendDeveloperTools',
+        'Cli'
     ),
     'module_listener_options' => array( 
         'config_cache_enabled'    => false,
