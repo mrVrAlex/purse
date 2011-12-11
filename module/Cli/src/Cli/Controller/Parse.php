@@ -8,7 +8,9 @@
  */
 namespace Cli\Controller;
 
-use Zend\Mvc\Controller\ActionController;
+use Zend\Mvc\Controller\ActionController,
+    Zend\Http\Client;
+
 
 class Parse extends ActionController
 {
@@ -21,7 +23,37 @@ class Parse extends ActionController
     {
         //$di = $this->getLocator();
         $config = \Cli\Module::getConfig(); //$di->get('config');
-        print_r($config->Parse->wm_exchange->toArray());
+        $c = $config->Parse->wm_exchange->toArray();
+        $client = new \Zend\Http\Client($c['parse-url']);
+
+        $objXml = new \Zend\Config\Xml($client->send()->getBody());
+        $queryArray = $objXml->WMExchnagerQuerys->query->toArray();
+
+        $getIdinArray = function($item){ return $item['id']; };
+
+        $queryIds = array_map($getIdinArray,$queryArray);
+        
+        //$table = new WmexchangQuery();
+        $rowsArray = array(array('id' => 7057038)); //$table->find($queryIds)->toArray();
+        if (count($rowsArray)>0) {
+            $rowsId = array_map($getIdinArray,$rowsArray); //
+            $uniqId = array_diff($queryIds,$rowsId);
+        } else {
+            $uniqId = $queryIds;
+        }
+        //Table->beginTransansion()
+        foreach ($queryArray as $key => $value){
+            if (!in_array($value['id'],$uniqId)) continue;
+            unset($value['allamountin']);
+            $value['type_id'] = 7;
+            $value['adddate'] = new \Zend\Db\Expr('NOW()');
+            //$table->insert($value);
+        }
+
+        print_r($queryIds);
+        print_r('--------------');
+        print_r($uniqId);
+
         
     }
 
